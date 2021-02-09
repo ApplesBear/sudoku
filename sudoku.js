@@ -340,6 +340,14 @@ function s() {
 
   function useNumbers() {
     numbers.forEach(function(number) {
+      cells.forEach(function(cell) {
+        cell.classList.remove("targetNumber");
+      })
+      for(let i = 0; i < cells.length; i++){
+        if(number.target.innerHTML !== "" && number.target.innerHTML === cells[i].innerHTML) {
+          cells[i].classList.add("targetNumber");
+         }
+       }
       number.addEventListener("click", function(getValue) {
         targetCell.innerHTML = getValue.target.innerHTML;
         if(getValue.target.innerHTML === "DEL") {
