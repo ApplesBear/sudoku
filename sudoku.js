@@ -25,7 +25,7 @@ function s() {
    } else if(!freeField()) {
      for(let s = 0; s < cells.length; s++) {
        cells[s].innerHTML = "";
-       cells[s].classList.remove("win", "zeroes", "selRow", "selCol", "selSqu", "selTarget", "error");
+       cells[s].classList.remove("win", "zeroes", "selRow", "selCol", "selSqu", "selTarget", "error", "targetNumber");
      }  
    } 
   }) 
