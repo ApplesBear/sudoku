@@ -340,14 +340,6 @@ function s() {
 
   function useNumbers() {
     numbers.forEach(function(number) {
-      cells.forEach(function(cell) {
-        cell.classList.remove("targetNumber");
-      })
-      for(let i = 0; i < cells.length; i++){
-        if(number.target.innerHTML !== "" && number.target.innerHTML === cells[i].innerHTML) {
-          cells[i].classList.add("targetNumber");
-         }
-       }
       number.addEventListener("click", function(getValue) {
         targetCell.innerHTML = getValue.target.innerHTML;
         if(getValue.target.innerHTML === "DEL") {
@@ -356,17 +348,21 @@ function s() {
         if(noRepeats() !== true) {
           repeat = false;
         }
+        for(let i = 0; i < cells.length; i++) {
+          cells[i].classList.remove("error", "targetNumber");
+          if(cells[i] !== targetCell) {
+            if(cells[i].innerHTML !== "" && cells[i].innerHTML === targetCell.innerHTML) {
+              cells[i].classList.add("targetNumber");
+            }
+          }
+        }
         noRepeats2();
         win();
       })
     })
   }
 
-
   function noRepeats2() {
-    for(let k = 0; k < cells.length; k++) {
-      cells[k].classList.remove("error");
-    }
     for(let i = 0; i < 9; i++) {
       for(let j = 0; j < 9; j++) {
         for(let g = 0; g < 9; g++) {
@@ -419,7 +415,6 @@ function s() {
     }
     return true;
   }
-  
 }
 }
 s();
