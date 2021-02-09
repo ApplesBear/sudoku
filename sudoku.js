@@ -348,17 +348,21 @@ function s() {
         if(noRepeats() !== true) {
           repeat = false;
         }
+        for(let i = 0; i < cells.length; i++) {
+          cells[i].classList.remove("error", "targetNumber");
+          if(cells[i] !== targetCell) {
+            if(cells[i].innerHTML !== "" && cells[i].innerHTML === targetCell.innerHTML) {
+              cells[i].classList.add("targetNumber");
+            }
+          }
+        }
         noRepeats2();
         win();
       })
     })
   }
 
-
   function noRepeats2() {
-    for(let k = 0; k < cells.length; k++) {
-      cells[k].classList.remove("error");
-    }
     for(let i = 0; i < 9; i++) {
       for(let j = 0; j < 9; j++) {
         for(let g = 0; g < 9; g++) {
@@ -411,7 +415,6 @@ function s() {
     }
     return true;
   }
-  
 }
 }
 s();
