@@ -16,7 +16,6 @@ function s() {
   let numbers = document.querySelectorAll(".number");
   let targetCell;
 
-
   head.addEventListener("click", function() {
     field.classList.toggle("hidden");
     number.classList.toggle("hidden");
@@ -187,25 +186,35 @@ function s() {
   
   //no-repeat condition
   function noRepeats() {
+    let errors = [];
+    errors.length = 0;
     for(let i = 0; i < 9; i++) {
       for(let j = 0; j < 9; j++) {
         for(let g = 0; g < 9; g++) {
           if(j !== g) {
             if((rows[i][j].innerHTML !== "") && (rows[i][j].innerHTML === rows[i][g].innerHTML)) {
-              repeat = true;
-              return true;
-            } else if((columns[i][j].innerHTML !== "") && (columns[i][j].innerHTML === columns[i][g].innerHTML)) {
-              repeat = true;
-              return true;
-            } else if((squares[i][j].innerHTML !== "") && (squares[i][j].innerHTML === squares[i][g].innerHTML)) {
-              repeat = true;
-              return true;
-            } else {
-              repeat = false;
-            }
+              rows[i][j].classList.add("error");
+              rows[i][g].classList.add("error");
+              errors.push(rows[i][j]);
+            } 
+            if((columns[i][j].innerHTML !== "") && (columns[i][j].innerHTML === columns[i][g].innerHTML)) {
+              columns[i][j].classList.add("error");
+              columns[i][g].classList.add("error");
+              errors.push(columns[i][j]);
+            } 
+            if((squares[i][j].innerHTML !== "") && (squares[i][j].innerHTML === squares[i][g].innerHTML)) {
+              squares[i][j].classList.add("error");
+              squares[i][g].classList.add("error");
+              errors.push(squares[i][j]);
+            } 
           } 
         }
       }
+    }
+    if(errors.length > 0) {
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -266,23 +275,23 @@ function s() {
     letConsts();
     forFixedCells();
     addNumbers();
+    for(let s = 0; s < cells.length; s++) {
+      cells[s].classList.remove("error");
+    }
   }
 
   function solve(inner) {
     solution = 0;
     for(let i = 0; i < zeroCells.length; i++) {
       zeroCells[i].innerHTML = inner;
-      noRepeats();
-      if(!repeat) {
+      if(!noRepeats()) {
         solution++;
-      }
+      } 
       zeroCells[i].innerHTML = "";
     }
-    if(solution > 1) {
+    if(solution > 2) {
       return true;
-    } else {
-      return false;
-    }
+    } 
   }
 
   function deleteNumbers() {
@@ -290,24 +299,22 @@ function s() {
     let i;
     let inn;
     let loop = 0;
-    while(loop < 25) {
+    while(loop < 40) {
       i = randomize(0, cells.length);
-      inn = cells[i].innerHTML;
       if(cells[i].innerHTML !== "") {
+        inn = cells[i].innerHTML;
         cells[i].innerHTML = "";
-        for(let j = 0; j < cells.length; j++) {
-          if(cells[j].innerHTML === "") {
-            zeroCells.push(cells[j]);
-          }
-        }
         if(solve(inn)) {
           cells[i].innerHTML = inn;
+        }
+        if(cells[i].innerHTML === "") {
+          zeroCells.push(cells[i]);
         }
         loop++;
       }
     }
   }
-  
+ 
   function letConsts() {
     for(let i = 0; i < cells.length; i++) {
       if(cells[i].innerHTML === "") {
@@ -345,9 +352,6 @@ function s() {
         if(getValue.target.innerHTML === "DEL") {
           targetCell.innerHTML = "";
         }
-        if(noRepeats() !== true) {
-          repeat = false;
-        }
         for(let i = 0; i < cells.length; i++) {
           cells[i].classList.remove("error", "targetNumber");
           if(cells[i] !== targetCell) {
@@ -356,36 +360,10 @@ function s() {
             }
           }
         }
-        noRepeats2();
+        noRepeats();
         win();
       })
     })
-  }
-
-  function noRepeats2() {
-    for(let i = 0; i < 9; i++) {
-      for(let j = 0; j < 9; j++) {
-        for(let g = 0; g < 9; g++) {
-                    if(j !== g) {
-            if((rows[i][j].innerHTML !== "") && (rows[i][j].innerHTML === rows[i][g].innerHTML)) {
-              repeat = true;
-              rows[i][j].classList.add("error");
-              rows[i][g].classList.add("error");
-            } 
-            if((columns[i][j].innerHTML !== "") && (columns[i][j].innerHTML === columns[i][g].innerHTML)) {
-              repeat = true;
-              columns[i][j].classList.add("error");
-              columns[i][g].classList.add("error");
-            } 
-            if((squares[i][j].innerHTML !== "") && (squares[i][j].innerHTML === squares[i][g].innerHTML)) {
-              repeat = true;
-              squares[i][j].classList.add("error");
-              squares[i][g].classList.add("error");
-            } else {repeat = false;}
-          } 
-        }
-      }
-    }
   }
 
   function winCheck() {
